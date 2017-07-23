@@ -1,5 +1,7 @@
 # Metenl
 
+[![build status](https://gitlab.com/coolcfan/metenl/badges/master/build.svg)](https://gitlab.com/coolcfan/metenl/commits/master)
+
 A simple and naive tool to automatically reply to /met message in super groups.
 
 ## Usage
