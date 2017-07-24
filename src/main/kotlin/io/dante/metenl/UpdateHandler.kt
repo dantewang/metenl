@@ -23,6 +23,7 @@ import java.util.Random
 class UpdateHandler(val username : String) : UpdateCallback {
 
     private val _channels : MutableMap<Int, TLChannel> = HashMap()
+    private val _metUsernames : MutableSet<String> = HashSet()
     private var _seq = 0
 
     override fun onShortChatMessage(client: TelegramClient, message: TLUpdateShortChatMessage) {
@@ -61,14 +62,16 @@ class UpdateHandler(val username : String) : UpdateCallback {
         }.filter {
             it.getMessageOrEmpty().contains(other = "/met @$username", ignoreCase = true)
         }.forEach {
-            val user = updates.users.filter { user -> user.id == it.getFromId() }[0]
+            val username = updates.users.filter { user -> user.id == it.getFromId() }[0].asUser.username
+
+            if (!_metUsernames.add(username)) return
 
             val channel = _channels[(it.getToAsPeer() as TLPeerChannel).channelId] ?: return
 
             val inputPeer = TLInputPeerChannel(channel.id, channel.accessHash)
 
             client.messagesSendMessage(
-                peer = inputPeer, message = "/met @${user.asUser.username}", randomId = Math.abs(Random().nextLong()))
+                peer = inputPeer, message = "/met @$username", randomId = Math.abs(Random().nextLong()))
         }
 
         _seq = updates.seq
