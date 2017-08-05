@@ -16,9 +16,11 @@ object MetEnl {
         val apiId = 0
         val apiHash = ""
         val username = "coolcfan"
+        val deviceModel = "VM"
+        val systemVersion = "Ubuntu 16.10"
 
         val application = TelegramApp(
-            apiId = apiId, apiHash = apiHash, deviceModel = "GCE-VM", systemVersion = "Ubuntu 16.10",
+            apiId = apiId, apiHash = apiHash, deviceModel = deviceModel, systemVersion = systemVersion,
             appVersion = "1.0", langCode = "en")
 
         val client = Kotlogram.getDefaultClient(
