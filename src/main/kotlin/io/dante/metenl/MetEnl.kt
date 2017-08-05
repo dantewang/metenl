@@ -5,19 +5,40 @@ import com.github.badoualy.telegram.api.TelegramApp
 import com.github.badoualy.telegram.api.TelegramClient
 import com.github.badoualy.telegram.tl.api.auth.TLAuthorization
 import com.github.badoualy.telegram.tl.exception.RpcErrorException
+import com.ufoscout.properlty.Properlty
 import java.io.File
 import java.util.Scanner
+import kotlin.system.exitProcess
 
 /**
  * Created by dante on 2017/7/18.
  */
 object MetEnl {
     fun start() {
-        val apiId = 0
-        val apiHash = ""
-        val username = "coolcfan"
-        val deviceModel = "VM"
-        val systemVersion = "Ubuntu 16.10"
+        if (!File("metenl.conf").exists()) {
+            println(
+                """
+                Configuration file not found.
+                Please create a file named \"metenl.conf\" with following properties:
+                   # required
+                   api.id=
+                   api.hash=
+                   met.username=
+                   # optional
+                   device.model=
+                   system.version=
+                """.trimIndent())
+
+            exitProcess(0)
+        }
+
+        val properties = Properlty.builder().add("./metenl.conf").build()
+
+        val apiId: Int = properties.getInt("api.id")!!
+        val apiHash = properties["api.hash"]!!
+        val username = properties["met.username"]!!
+        val deviceModel = properties["device.model", "PowerEdge R740"]
+        val systemVersion = properties["system.version", "Red Hat Enterprise Linux 7.3"]
 
         val application = TelegramApp(
             apiId = apiId, apiHash = apiHash, deviceModel = deviceModel, systemVersion = systemVersion,
