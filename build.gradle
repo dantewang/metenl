@@ -27,7 +27,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
 
     compile 'com.ufoscout.properlty:properlty-kotlin:1.4.0'
-    compile 'com.github.badoualy:kotlogram:21cccea'
+    compile 'com.github.badoualy:kotlogram:e3c26c6'
 }
 
 jar {
