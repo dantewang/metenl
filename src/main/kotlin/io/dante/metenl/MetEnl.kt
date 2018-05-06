@@ -56,7 +56,7 @@ object MetEnl {
         }
     }
 
-    fun auth(client : TelegramClient) {
+    private fun auth(client : TelegramClient) {
         val scanner = Scanner(System.`in`)
 
         println("Phone Number: ")
@@ -65,18 +65,16 @@ object MetEnl {
 
         var auth : TLAuthorization
 
-        try {
+        auth = try {
             println("Authentication Code: ")
             val code = scanner.nextLine()
-            auth = client.authSignIn(phoneNumber, sentCode.phoneCodeHash, code)
-        }
-        catch (ree : RpcErrorException) {
+            client.authSignIn(phoneNumber, sentCode.phoneCodeHash, code)
+        } catch (ree : RpcErrorException) {
             if ("SESSION_PASSWORD_NEEDED" == ree.tag) {
                 println("2FA Password: ")
                 val password = scanner.nextLine()
-                auth = client.authCheckPassword(password)
-            }
-            else {
+                client.authCheckPassword(password)
+            } else {
                 throw ree
             }
         }

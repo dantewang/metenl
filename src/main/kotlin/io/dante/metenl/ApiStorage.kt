@@ -11,31 +11,31 @@ import java.io.File
  */
 class ApiStorage : TelegramApiStorage {
 
-    val AUTH_KEY_FILE = File("auth.key")
-    val NEAREST_DC_FILE = File("dc.save")
+    private val _authKeyFile = File("auth.key")
+    private val _nearestDCFile = File("dc.save")
 
     override fun deleteAuthKey() {
-        AUTH_KEY_FILE.delete()
+        _authKeyFile.delete()
     }
 
     override fun deleteDc() {
-        NEAREST_DC_FILE.delete()
+        _nearestDCFile.delete()
     }
 
     override fun loadAuthKey(): AuthKey? {
-       if (!AUTH_KEY_FILE.exists()) {
+       if (!_authKeyFile.exists()) {
            return null
        }
 
-        return AuthKey(key = AUTH_KEY_FILE.readBytes())
+        return AuthKey(key = _authKeyFile.readBytes())
     }
 
     override fun loadDc(): DataCenter? {
-        if (!NEAREST_DC_FILE.exists()) {
+        if (!_nearestDCFile.exists()) {
             return null
         }
 
-        val dcInfo = NEAREST_DC_FILE.readText()
+        val dcInfo = _nearestDCFile.readText()
             .split(regex = ":".toRegex())
             .dropLastWhile { it.isEmpty() }
             .toTypedArray()
@@ -48,11 +48,11 @@ class ApiStorage : TelegramApiStorage {
     }
 
     override fun saveAuthKey(authKey: AuthKey) {
-        AUTH_KEY_FILE.writeBytes(array = authKey.key)
+        _authKeyFile.writeBytes(array = authKey.key)
     }
 
     override fun saveDc(dataCenter: DataCenter) {
-        NEAREST_DC_FILE.writeText(text = dataCenter.toString())
+        _nearestDCFile.writeText(text = dataCenter.toString())
     }
 
     override fun saveSession(session: MTSession?) {

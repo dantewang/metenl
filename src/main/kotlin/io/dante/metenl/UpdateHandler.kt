@@ -20,10 +20,10 @@ import java.util.Random
 /**
  * Created by dante on 2017/7/18.
  */
-class UpdateHandler(val username : String) : UpdateCallback {
+class UpdateHandler(private val username : String) : UpdateCallback {
 
     private val _channels : MutableMap<Int, TLChannel> = HashMap()
-    private val _metUsernames : MutableSet<String> = HashSet()
+    private val _metUserNames : MutableSet<String> = HashSet()
     private var _seq = 0
 
     override fun onShortChatMessage(client: TelegramClient, message: TLUpdateShortChatMessage) {
@@ -64,7 +64,7 @@ class UpdateHandler(val username : String) : UpdateCallback {
         }.forEach {
             val username = updates.users.filter { user -> user.id == it.getFromId() }[0].asUser.username
 
-            if (!_metUsernames.add(username)) return
+            if (!_metUserNames.add(username)) return
 
             val channel = _channels[(it.getToAsPeer() as TLPeerChannel).channelId] ?: return
 
